@@ -1,4 +1,7 @@
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.sun.org.apache.xerces.internal.util.URI;
 import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
@@ -8,6 +11,9 @@ public class InternshipLink {
 	private String link;
 	private String companySite;
 	
+	private Set<String> location, positions, langauges;
+	private String size, platform;
+
 	public InternshipLink(String company, String link){
 		this.company = company.trim();
 		this.link = link.trim();
@@ -60,6 +66,55 @@ public class InternshipLink {
 
 	public void setCompanySite(String companySite) {
 		this.companySite = companySite;
+	}
+	
+	public Set<String> getLocation() {
+		if(!location.isEmpty())
+			return location;
+		else
+			return new HashSet<String>(Arrays.asList("all"));
+	}
+
+	public void setLocation(Set<String> location) {
+		this.location = location;
+	}
+
+	public Set<String> getPositions() {
+		if(!positions.isEmpty())
+			return positions;
+		else
+			return new HashSet<String>(Arrays.asList("all"));
+	}
+
+	public void setPositions(Set<String> positions) {
+		this.positions = positions;
+	}
+
+	public Set<String> getLangauges() {
+		if(!langauges.isEmpty())
+			return langauges;
+		else
+			return new HashSet<String>(Arrays.asList("all"));
+	}
+
+	public void setLangauges(Set<String> langauges) {
+		this.langauges = langauges;
+	}
+
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+
+	public String getPlatform() {
+		return platform;
+	}
+
+	public void setPlatform(String platform) {
+		this.platform = platform;
 	}
 	
 }

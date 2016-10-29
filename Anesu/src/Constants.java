@@ -26,13 +26,13 @@ public class Constants {
 				, "facebook", "featured","google", "hp", "ibm", "intel", "microsoft", "motorola", "netapp"
 				, "oracle", "qualcomm", "symantec", "xerox", "yahoo"};
 		mobileKeywords = new String[]{"mobile", "ios", "android"};
-		webKeywords = new String[]{"front-end", "frontend", "back-end","backend", "sql", "html", "css"};
+		webKeywords = new String[]{"front-end", "frontend", "back-end","backend", "sql"};
 		requirementsKeywords = new String[]{"experience", "require"};
 		cities = getCities("data/cities.txt");
 		languages = new String[]{"java", "javascript", "php", "python", "objective-c"
 				, "ruby", "perl", "c\\+\\+", "c#", "swift", "sql", "haskell", "scala", "bash"
-				, "lua", "clojure", "assembly", "html", "css"};
-		positions = new String[]{"customer support agent", "android angineer", "software engineer in quality"
+				, "lua", "clojure", "assembly"};
+		positions = new String[]{"android engineer", "software engineer in quality"
 				, "product manager", "software engineer", "product management", "software developer", "big data engineer"
 				, "quality assurence"};
 		languagesSet = new HashSet<>(Arrays.asList(languages));

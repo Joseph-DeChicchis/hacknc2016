@@ -5,6 +5,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.jaunt.Element;
 import com.jaunt.Elements;
 import com.jaunt.JauntException;
@@ -12,22 +15,45 @@ import com.jaunt.NotFound;
 import com.jaunt.ResponseException;
 import com.jaunt.UserAgent;
 
+
 public class Scraper {
 	public static void main(String[] args){
 		String website = "http://www.intern.supply/"; //enter the website to be scraped
 		
+		JSONObject data = new JSONObject();
+		
 		try {
 			List<InternshipLink> links = getLinks(website);
-			links.stream().forEach(a -> System.out.println(a));
-			System.out.println(getLocation(links.get(3)));
-			System.out.println(getLanguageSkills(links.get(3)));
-			System.out.println(getPositions(links.get(4)));
-			System.out.println(getPlatform(links.get(9)));
-			System.out.println(links.get(6).getCompany());
-			System.out.println(getCompanySize(links.get(6)));
+			for(InternshipLink link : links){
+				link.setLangauges(getLanguageSkills(link));
+				link.setLocation(getLocation(link));
+				link.setPositions(getPositions(link));
+				link.setSize(getCompanySize(link));
+				link.setPlatform(getPlatform(link));
+				
+				JSONObject company = getJSONObject(link);
+				System.out.println(company);
+				data.wrap(company);
+			}
+			
 		} catch (JauntException e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println(data);
+	}
+	
+	private static JSONObject getJSONObject(InternshipLink link){
+		JSONObject company = new JSONObject();
+		
+		company.put("company", link.getCompany());
+		company.put("size", link.getSize());
+		company.put("platform", link.getPlatform());
+		company.put("locations", new JSONArray(link.getLocation()));
+		company.put("positions", new JSONArray(link.getPositions()));
+		company.put("languages", new JSONArray(link.getLangauges()));
+		
+		return company;
 	}
 	
 	private static List<InternshipLink> getLinks(String site) throws JauntException {
@@ -57,7 +83,11 @@ public class Scraper {
 	private static Set<String> getLocation(InternshipLink link) throws ResponseException{
 		Set<String> locations = new HashSet<>();
 		UserAgent agent = new UserAgent();
-		agent.visit(link.getLink());
+		try{
+			agent.visit(link.getLink());
+		}catch(Exception e){
+			return new HashSet<String>();
+		}
 		
 		Element doc = agent.doc;
 		Pattern p = Pattern.compile("[A-Z][a-zA-Z]{1,15}(\\.)?(\\s){0,2}([A-Z][a-zA-Z]{1,21})?,(\\s)?(([A-Z]{2})|(United States)|(US))");
@@ -74,7 +104,11 @@ public class Scraper {
 	private static Set<String> getLanguageSkills(InternshipLink link)throws ResponseException {
 		Set<String> skills = new HashSet<>();
 		UserAgent agent = new UserAgent();
-		agent.visit(link.getLink());
+		try{
+			agent.visit(link.getLink());
+		}catch(Exception e){
+			return new HashSet<String>();
+		}
 		
 		Element doc = agent.doc;
 		Pattern p = Pattern.compile(Constants.getLanguagesString());
@@ -103,7 +137,11 @@ public class Scraper {
 	private static Set<String> getPositions(InternshipLink link) throws ResponseException, NotFound{
 		Set<String> positions = new HashSet<>();
 		UserAgent agent = new UserAgent();
-		agent.visit(link.getLink());
+		try{
+			agent.visit(link.getLink());
+		}catch(Exception e){
+			return new HashSet<String>();
+		}
 		
 		Element doc = agent.doc;
 		
@@ -121,7 +159,11 @@ public class Scraper {
 	public static String getPlatform(InternshipLink link) throws ResponseException{
 		Set<String> positions = new HashSet<>();
 		UserAgent agent = new UserAgent();
-		agent.visit(link.getLink());
+		try{
+			agent.visit(link.getLink());
+		}catch(Exception e){
+			return "all";
+		}
 		
 		int mobile = 0;
 		int web = 0;
