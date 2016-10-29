@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 import com.jaunt.Element;
 import com.jaunt.Elements;
 import com.jaunt.JauntException;
+import com.jaunt.NotFound;
 import com.jaunt.ResponseException;
 import com.jaunt.UserAgent;
 
@@ -17,7 +18,10 @@ public class Scraper {
 		
 		try {
 			List<InternshipLink> links = getLinks(website);
-			System.out.println(getLocation(links.get(0)));
+			links.stream().forEach(a -> System.out.println(a));
+			System.out.println(getLocation(links.get(3)));
+			System.out.println(getLanguageSkills(links.get(3)));
+			//System.out.println(getRequirements(links.get(3)));
 		} catch (JauntException e) {
 			e.printStackTrace();
 		}
@@ -53,7 +57,7 @@ public class Scraper {
 		agent.visit(link.getLink());
 		
 		Element doc = agent.doc;
-		Pattern p = Pattern.compile("[A-Z][a-zA-Z]{1,15}(\\.)?(\\s){0,2}([A-Z][a-zA-Z]{1,21})?,(\\s)?[A-Z]{2}");
+		Pattern p = Pattern.compile("[A-Z][a-zA-Z]{1,15}(\\.)?(\\s){0,2}([A-Z][a-zA-Z]{1,21})?,(\\s)?(([A-Z]{2})|(United States)|(US))");
 		Matcher m = p.matcher(doc.innerHTML());
 		
 		while(m.find()) {
@@ -62,6 +66,34 @@ public class Scraper {
 				locations.add(loc);
 		}
 		return locations;
+	}
+	
+	private static Set<String> getLanguageSkills(InternshipLink link)throws ResponseException {
+		Set<String> skills = new HashSet<>();
+		UserAgent agent = new UserAgent();
+		agent.visit(link.getLink());
+		
+		Element doc = agent.doc;
+		Pattern p = Pattern.compile(Constants.getLanguagesString());
+		Matcher m = p.matcher(doc.innerHTML().toLowerCase());
+		
+		while(m.find()) {
+			String skill = m.group().trim().toLowerCase();
+			if(Constants.languagesSet.contains(skill))
+				skills.add(skill);
+		}
+		
+		return skills;
+	}
+	
+	private static Set<String> getRequirements(InternshipLink link) throws ResponseException, NotFound{
+		Set<String> skills = new HashSet<>();
+		UserAgent agent = new UserAgent();
+		agent.visit(link.getLink());
+		
+		Element doc = agent.doc;
+		
+		return null;
 	}
 	
 	private static boolean isValidLocation(String loc){

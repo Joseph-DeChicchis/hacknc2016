@@ -10,16 +10,33 @@ import java.util.TreeSet;
 
 
 public class Constants {
-	public static String[] languages = {"java", "javascript", "php", "python", "objective-c"
-			, "ruby", "perl", "c", "c++", "c#", "swift", "sql", "go", "haskell", "scala", "bash"
-			, "lua", "clojure", "assembly", "html", "css"};
+	public static String[] languages;
 	
-	public static Set<String> languagesSet = new HashSet<>(Arrays.asList(languages));
-	public static String[] positions = {"customer support agent", "android angineer"};
+	public static Set<String> languagesSet;
+	public static String[] positions;
+	public static String[] requirementsKeywords;
 	public static Set<String> cities;
 	
 	static{
+		requirementsKeywords = new String[]{"experience", "require"};
 		cities = getCities("data/cities.txt");
+		languages = new String[]{"java", "javascript", "php", "python", "objective-c"
+				, "ruby", "perl", "c", "c\\+\\+", "c#", "swift", "sql", "go", "haskell", "scala", "bash"
+				, "lua", "clojure", "assembly", "html", "css"};
+		positions = new String[]{"customer support agent", "android angineer"};
+		languagesSet = new HashSet<>(Arrays.asList(languages));
+	}
+	
+	public static String getLanguagesString(){
+		StringBuffer sb = new StringBuffer("(");
+		for(String skill : languages){		
+			sb.append("|" + skill);
+		}
+		
+		sb.replace(1,  2, "");
+		sb.append(")");
+		
+		return sb.toString();
 	}
 	
 	private static Set<String> getCities(String path){
