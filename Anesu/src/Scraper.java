@@ -22,6 +22,7 @@ public class Scraper {
 			System.out.println(getLocation(links.get(3)));
 			System.out.println(getLanguageSkills(links.get(3)));
 			System.out.println(getPositions(links.get(4)));
+			System.out.println(getPlatform(links.get(9)));
 		} catch (JauntException e) {
 			e.printStackTrace();
 		}
@@ -113,6 +114,35 @@ public class Scraper {
 		}
 		
 		return positions;
+	}
+	
+	public static String getPlatform(InternshipLink link) throws ResponseException{
+		Set<String> positions = new HashSet<>();
+		UserAgent agent = new UserAgent();
+		agent.visit(link.getLink());
+		
+		int mobile = 0;
+		int web = 0;
+		
+		Pattern p = Pattern.compile(Constants.getMobileString());
+		Matcher m = p.matcher(agent.doc.innerHTML().toLowerCase());
+		
+		while(m.find()){
+			mobile++;
+		}
+		
+		p = Pattern.compile(Constants.getWebString());
+		m = p.matcher(agent.doc.innerHTML().toLowerCase());
+		
+		while(m.find()){
+			web++;
+		}
+		
+		if(mobile > web){
+			return "mobile";
+		}else{
+			return "web";
+		}
 	}
 	
 	private static boolean isValidLocation(String loc){

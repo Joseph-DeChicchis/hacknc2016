@@ -15,9 +15,13 @@ public class Constants {
 	public static Set<String> languagesSet;
 	public static String[] positions;
 	public static String[] requirementsKeywords;
+	public static String[] mobileKeywords;
+	public static String[] webKeywords;
 	public static Set<String> cities;
 	
 	static{
+		mobileKeywords = new String[]{"mobile", "ios", "android"};
+		webKeywords = new String[]{"front-end", "frontend", "back-end","backend", "sql", "html", "css"};
 		requirementsKeywords = new String[]{"experience", "require"};
 		cities = getCities("data/cities.txt");
 		languages = new String[]{"java", "javascript", "php", "python", "objective-c"
@@ -33,6 +37,31 @@ public class Constants {
 		StringBuffer sb = new StringBuffer("(");
 		for(String skill : languages){		
 			sb.append("|" + skill);
+		}
+		
+		sb.replace(1,  2, "");
+		sb.append(")");
+		
+		return sb.toString();
+	}
+	
+	public static String getMobileString(){
+		StringBuffer sb = new StringBuffer("(");
+		for(String tech : mobileKeywords){		
+			sb.append("|" + tech);
+		}
+		
+		sb.replace(1,  2, "");
+		sb.append(")");
+		
+		return sb.toString();
+	}
+	
+	
+	public static String getWebString(){
+		StringBuffer sb = new StringBuffer("(");
+		for(String tech : webKeywords){		
+			sb.append("|" + tech);
 		}
 		
 		sb.replace(1,  2, "");
