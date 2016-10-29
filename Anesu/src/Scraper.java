@@ -21,7 +21,7 @@ public class Scraper {
 			links.stream().forEach(a -> System.out.println(a));
 			System.out.println(getLocation(links.get(3)));
 			System.out.println(getLanguageSkills(links.get(3)));
-			//System.out.println(getRequirements(links.get(3)));
+			System.out.println(getPositions(links.get(4)));
 		} catch (JauntException e) {
 			e.printStackTrace();
 		}
@@ -92,13 +92,31 @@ public class Scraper {
 		agent.visit(link.getLink());
 		
 		Element doc = agent.doc;
+
 		
 		return null;
 	}
 	
+	private static Set<String> getPositions(InternshipLink link) throws ResponseException, NotFound{
+		Set<String> positions = new HashSet<>();
+		UserAgent agent = new UserAgent();
+		agent.visit(link.getLink());
+		
+		Element doc = agent.doc;
+		
+		Pattern p = Pattern.compile(Constants.getPositionString());
+		Matcher m = p.matcher(doc.innerHTML().toLowerCase());
+		
+		while(m.find()) {
+			String skill = m.group().trim().toLowerCase();
+			positions.add(skill);
+		}
+		
+		return positions;
+	}
+	
 	private static boolean isValidLocation(String loc){
 		String city = loc.split(",")[0].trim().toLowerCase();
-		System.out.println(city + " is being checked " + Constants.cities.size());
 		return Constants.cities.contains(city);
 	}
 }

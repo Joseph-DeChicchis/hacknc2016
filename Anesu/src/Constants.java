@@ -21,9 +21,11 @@ public class Constants {
 		requirementsKeywords = new String[]{"experience", "require"};
 		cities = getCities("data/cities.txt");
 		languages = new String[]{"java", "javascript", "php", "python", "objective-c"
-				, "ruby", "perl", "c", "c\\+\\+", "c#", "swift", "sql", "go", "haskell", "scala", "bash"
+				, "ruby", "perl", "c\\+\\+", "c#", "swift", "sql", "go", "haskell", "scala", "bash"
 				, "lua", "clojure", "assembly", "html", "css"};
-		positions = new String[]{"customer support agent", "android angineer"};
+		positions = new String[]{"customer support agent", "android angineer", "software engineer in quality"
+				, "product manager", "software engineer", "product management", "software developer", "big data engineer"
+				, "quality assurence"};
 		languagesSet = new HashSet<>(Arrays.asList(languages));
 	}
 	
@@ -31,6 +33,18 @@ public class Constants {
 		StringBuffer sb = new StringBuffer("(");
 		for(String skill : languages){		
 			sb.append("|" + skill);
+		}
+		
+		sb.replace(1,  2, "");
+		sb.append(")");
+		
+		return sb.toString();
+	}
+	
+	public static String getPositionString(){
+		StringBuffer sb = new StringBuffer("(");
+		for(String pos : positions){		
+			sb.append("|" + pos);
 		}
 		
 		sb.replace(1,  2, "");
