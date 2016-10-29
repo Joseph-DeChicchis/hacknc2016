@@ -23,6 +23,8 @@ public class Scraper {
 			System.out.println(getLanguageSkills(links.get(3)));
 			System.out.println(getPositions(links.get(4)));
 			System.out.println(getPlatform(links.get(9)));
+			System.out.println(links.get(6).getCompany());
+			System.out.println(getCompanySize(links.get(6)));
 		} catch (JauntException e) {
 			e.printStackTrace();
 		}
@@ -143,6 +145,14 @@ public class Scraper {
 		}else{
 			return "web";
 		}
+	}
+	
+	public static String getCompanySize(InternshipLink link){
+		String company = link.getCompany().toLowerCase();
+		if(Constants.largeCompaniesSet.contains(company)){
+			return "large";
+		}
+		return "medium";
 	}
 	
 	private static boolean isValidLocation(String loc){

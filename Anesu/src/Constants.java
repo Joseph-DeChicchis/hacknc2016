@@ -17,20 +17,26 @@ public class Constants {
 	public static String[] requirementsKeywords;
 	public static String[] mobileKeywords;
 	public static String[] webKeywords;
+	public static String[] largeCompanies;
+	public static Set<String> largeCompaniesSet;
 	public static Set<String> cities;
 	
 	static{
+		largeCompanies = new String[]{"amazon", "amd", "apple", "broadcom", "cisco", "dell", "ebay", "emc"
+				, "facebook", "featured","google", "hp", "ibm", "intel", "microsoft", "motorola", "netapp"
+				, "oracle", "qualcomm", "symantec", "xerox", "yahoo"};
 		mobileKeywords = new String[]{"mobile", "ios", "android"};
 		webKeywords = new String[]{"front-end", "frontend", "back-end","backend", "sql", "html", "css"};
 		requirementsKeywords = new String[]{"experience", "require"};
 		cities = getCities("data/cities.txt");
 		languages = new String[]{"java", "javascript", "php", "python", "objective-c"
-				, "ruby", "perl", "c\\+\\+", "c#", "swift", "sql", "go", "haskell", "scala", "bash"
+				, "ruby", "perl", "c\\+\\+", "c#", "swift", "sql", "haskell", "scala", "bash"
 				, "lua", "clojure", "assembly", "html", "css"};
 		positions = new String[]{"customer support agent", "android angineer", "software engineer in quality"
 				, "product manager", "software engineer", "product management", "software developer", "big data engineer"
 				, "quality assurence"};
 		languagesSet = new HashSet<>(Arrays.asList(languages));
+		largeCompaniesSet = new HashSet<>(Arrays.asList(largeCompanies));
 	}
 	
 	public static String getLanguagesString(){
