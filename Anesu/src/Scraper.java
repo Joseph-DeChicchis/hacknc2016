@@ -1,6 +1,8 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import com.jaunt.JauntException;
 import com.jaunt.NotFound;
 import com.jaunt.ResponseException;
 import com.jaunt.UserAgent;
+import com.jaunt.component.Table;
 
 
 public class Scraper {
@@ -27,6 +30,8 @@ public class Scraper {
 		
 		JSONObject data = new JSONObject();
 		PrintWriter pw = null;
+		
+		List<String> types = new ArrayList<>();
 		
 		try {
 			pw = new PrintWriter(new File("data/db.json"));
@@ -47,8 +52,11 @@ public class Scraper {
 				link.setPlatform("media");
 				
 				JSONObject company = getJSONObject(link);
-				System.out.println(++count + " of " + designLinks.size());
+				//System.out.println(++count + " of " + designLinks.size());
 				//data.wrap(company);
+				String type = getCompanyType(link);
+				if(type != null)
+					types.add(type);
 				pw.println(company + ",");
 			}
 			
@@ -62,8 +70,11 @@ public class Scraper {
 				link.setPlatform(getPlatform(link));
 				
 				JSONObject company = getJSONObject(link);
-				System.out.println(++count + " of " + links.size());
+				//System.out.println(++count + " of " + links.size());
 				//data.wrap(company);
+				String type = getCompanyType(link);
+				if(type != null)
+					types.add(type);
 				pw.println(company + ",");
 			}
 			
@@ -71,7 +82,8 @@ public class Scraper {
 			e.printStackTrace();
 		}
 		
-		System.out.println(data);
+		System.out.println(types);
+		//System.out.println(data);
 		
 	}
 	
@@ -228,6 +240,64 @@ public class Scraper {
 			return "large";
 		}
 		return "medium";
+	}
+	
+	public static String getCompanyType(InternshipLink link){
+		String type = null;
+		UserAgent agent = new UserAgent();
+		
+		URL wiki = null;
+		try {
+			wiki = new URL("https://en.wikipedia.org/wiki/" + link.getCompany());
+			//wiki = new URL("https://en.wikipedia.org/wiki/Akamai_Technologies");
+		} catch (MalformedURLException e1) {
+			e1.printStackTrace();
+			return null;
+		}
+		
+		try {
+			agent.visit(wiki.toString());
+		} catch (ResponseException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		Table table = null;
+		try {
+			table = agent.doc.getTable("<table>");
+		} catch (NotFound e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		Elements th = table.getElement().findEach("<th>");
+		for(Element t : th){
+			Element td = null;
+			if(t.getText().equals("Industry")){
+				try {
+					td = t.nextSiblingElement();
+				} catch (NotFound e) {
+					e.printStackTrace();
+					return null;
+				}
+				
+				Element a = null;
+				try {
+					a = td.getFirst("<a>");
+				} catch (NotFound e) {
+					e.printStackTrace();
+					return null;
+				}
+				
+				type = a.getText();
+				System.out.println(type);
+				
+			}
+		}
+		
+		
+		
+		return type;
 	}
 	
 	private static boolean isValidLocation(String loc){

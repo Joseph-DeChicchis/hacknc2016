@@ -25,12 +25,23 @@ public class Constants {
 	public static String[] mobileKeywords;
 	public static String[] webKeywords;
 	public static String[] largeCompanies;
+	public static String[] categories;
+	public static String[] softwareKeyWords;
+	public static String[] hardwareKeyWords;
+	public static String[] realEstateKeyWords;
+	public static String[] fincanceKeyWords;
+	public static String[] entertainmentKeyWords;
+	public static String[] travelKeyWords;
 	public static Set<String> largeCompaniesSet;
 	public static Set<String> cities;
 	
 	public static Map<String, String> types;
 	
 	static{
+		softwareKeyWords = new String[]{"soft", "software", "internet"};
+		hardwareKeyWords = new String[]{"hard", "hardware", "system"};
+		categories = new String[]{"software", "hardware", "design", "finance", "real estate"
+				, "entertainment", "travel"};
 		largeCompanies = new String[]{"amazon", "amd", "apple", "broadcom", "cisco", "dell", "ebay", "emc"
 				, "facebook", "featured","google", "hp", "ibm", "intel", "microsoft", "motorola", "netapp"
 				, "oracle", "qualcomm", "symantec", "xerox", "yahoo"};
