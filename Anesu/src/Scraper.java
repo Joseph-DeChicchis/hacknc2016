@@ -48,13 +48,13 @@ public class Scraper {
 				link.setPositions(new HashSet<String>(Arrays.asList("UI")));
 				link.setSize(getCompanySize(link));
 				link.setPlatform("media");
-				
-				JSONObject company = getJSONObject(link);
-				//System.out.println(++count + " of " + designLinks.size());
-				//data.wrap(company);
 				String type = getCompanyType(link);
 				link.setType(parseType(type));
+				
+				JSONObject company = getJSONObject(link);
 				pw.println(company + ",");
+				//System.out.println(++count + " of " + designLinks.size());
+				//data.wrap(company);
 			}
 			
 			count = 0;
@@ -65,13 +65,13 @@ public class Scraper {
 				link.setPositions(getPositions(link));
 				link.setSize(getCompanySize(link));
 				link.setPlatform(getPlatform(link));
-				
-				JSONObject company = getJSONObject(link);
-				//System.out.println(++count + " of " + links.size());
-				//data.wrap(company);
 				String type = getCompanyType(link);
 				link.setType(parseType(type));
+				
+				JSONObject company = getJSONObject(link);
 				pw.println(company + ",");
+				//System.out.println(++count + " of " + links.size());
+				//data.wrap(company);
 			}
 			
 		} catch (JauntException e) {

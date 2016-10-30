@@ -16,6 +16,7 @@ public class Constants {
 	private static final String QUALITY_ASSURANCE = "QA";
 	private static final String DESIGN = "UI";
 	private static final String DATA_ANALYST = "DA";
+	private static final String PRODUCT_MANAGER = "PM";
 	
 	public static String[] languages;
 	
@@ -72,8 +73,8 @@ public class Constants {
 		map.put("android engineer", SOFTWARE_ENGINEERING);
 		map.put("software engineer", SOFTWARE_ENGINEERING);
 		map.put("software engineer in quality", QUALITY_ASSURANCE);
-		map.put("product management", SOFTWARE_ENGINEERING);
-		map.put("product manager", SOFTWARE_ENGINEERING);
+		map.put("product management", PRODUCT_MANAGER);
+		map.put("product manager", PRODUCT_MANAGER);
 		map.put("sw engineer", SOFTWARE_ENGINEERING);
 		map.put("UI/UX", DESIGN);
 		map.put("quality assurance", QUALITY_ASSURANCE);
