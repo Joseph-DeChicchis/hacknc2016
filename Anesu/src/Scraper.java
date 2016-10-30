@@ -43,14 +43,14 @@ public class Scraper {
 			List<InternshipLink> designLinks = getLinks(websiteDesign);
 			int count = 0;
 			for(InternshipLink link : designLinks){
+				String type = getCompanyType(link);
+				link.setType(parseType(type));
 				link.setLangauges(new HashSet<String>());
 				link.setLocation(getLocation(link));
 				link.setPositions(new HashSet<String>(Arrays.asList("UI")));
 				link.setSize(getCompanySize(link));
 				link.setPlatform("media");
-				String type = getCompanyType(link);
-				link.setType(parseType(type));
-				
+		
 				JSONObject company = getJSONObject(link);
 				pw.println(company + ",");
 				//System.out.println(++count + " of " + designLinks.size());
@@ -60,13 +60,13 @@ public class Scraper {
 			count = 0;
 			List<InternshipLink> links = getLinks(website);
 			for(InternshipLink link : links){
+				String type = getCompanyType(link);
+				link.setType(parseType(type));
 				link.setLangauges(getLanguageSkills(link));
 				link.setLocation(getLocation(link));
 				link.setPositions(getPositions(link));
 				link.setSize(getCompanySize(link));
 				link.setPlatform(getPlatform(link));
-				String type = getCompanyType(link);
-				link.setType(parseType(type));
 				
 				JSONObject company = getJSONObject(link);
 				pw.println(company + ",");
@@ -78,6 +78,7 @@ public class Scraper {
 			e.printStackTrace();
 		}
 		
+		pw.close();
 		//System.out.println(data);
 		
 	}
@@ -87,54 +88,61 @@ public class Scraper {
 			return null;
 		}
 		for(String str : Constants.softwareKeyWords){
-			if(type.indexOf(str) >= 0){
+			if(type.toLowerCase().trim().indexOf(str) >= 0){
+				System.out.println(type.toLowerCase() + " -> " + str);
 				return "software";
 			}
 		}
 		
 		for(String str : Constants.designKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "design";
 			}
 		}
 		
 		for(String str : Constants.hardwareKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "hardware";
 			}
 		}
 		
 		for(String str : Constants.realEstateKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "real estate";
 			}
 		}
 		
 		for(String str : Constants.financeKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "finance";
 			}
 		}
 		
 		for(String str : Constants.entertainmentKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "entertainment";
 			}
 		}
 		
 		for(String str : Constants.travelKeyWords){
 			if(type.indexOf(str) >= 0){
-				return "software";
+				return "travel";
 			}
 		}
+
 		return null;
 	}
 	
 	private static JSONObject getJSONObject(InternshipLink link){
 		JSONObject company = new JSONObject();
 		
+		
+		System.out.println(link.getType());
+		if(link.getType() == null)
+			company.put("type", "");
+		else
+			company.put("type", link.getType());
 		company.put("company", link.getCompany());
-		company.put("type", link.getType());
 		company.put("link", link.getLink());
 		company.put("size", link.getSize());
 		company.put("platform", link.getPlatform());
@@ -212,17 +220,6 @@ public class Scraper {
 		return skills;
 	}
 	
-	private static Set<String> getRequirements(InternshipLink link) throws ResponseException, NotFound{
-		Set<String> skills = new HashSet<>();
-		UserAgent agent = new UserAgent();
-		agent.visit(link.getLink());
-		
-		Element doc = agent.doc;
-
-		
-		return null;
-	}
-	
 	private static Set<String> getPositions(InternshipLink link) throws ResponseException, NotFound{
 		Set<String> positions = new HashSet<>();
 		UserAgent agent = new UserAgent();
@@ -239,7 +236,8 @@ public class Scraper {
 		
 		while(m.find()) {
 			String skill = m.group().trim().toLowerCase();
-			positions.add(Constants.types.get(skill));
+			if(Constants.types.containsKey(skill))
+				positions.add(Constants.types.get(skill));
 		}
 		
 		return positions;
@@ -334,7 +332,6 @@ public class Scraper {
 				}
 				
 				type = a.getText();
-				System.out.println(type);
 				
 			}
 		}
