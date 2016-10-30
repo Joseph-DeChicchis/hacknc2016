@@ -1,4 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,10 +23,36 @@ import com.jaunt.UserAgent;
 public class Scraper {
 	public static void main(String[] args){
 		String website = "http://www.intern.supply/"; //enter the website to be scraped
+		String websiteDesign = "http://www.intern.supply/design.html";
 		
 		JSONObject data = new JSONObject();
+		PrintWriter pw = null;
 		
 		try {
+			pw = new PrintWriter(new File("data/db.json"));
+			pw.println(data.toString());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			List<InternshipLink> designLinks = getLinks(websiteDesign);
+			int count = 0;
+			for(InternshipLink link : designLinks){
+				link.setLangauges(new HashSet<String>());
+				link.setLocation(getLocation(link));
+				link.setPositions(new HashSet<String>(Arrays.asList("UI")));
+				link.setSize(getCompanySize(link));
+				link.setPlatform("media");
+				
+				JSONObject company = getJSONObject(link);
+				System.out.println(++count + " of " + designLinks.size());
+				//data.wrap(company);
+				pw.println(company + ",");
+			}
+			
+			count = 0;
 			List<InternshipLink> links = getLinks(website);
 			for(InternshipLink link : links){
 				link.setLangauges(getLanguageSkills(link));
@@ -32,8 +62,9 @@ public class Scraper {
 				link.setPlatform(getPlatform(link));
 				
 				JSONObject company = getJSONObject(link);
-				System.out.println(company);
-				data.wrap(company);
+				System.out.println(++count + " of " + links.size());
+				//data.wrap(company);
+				pw.println(company + ",");
 			}
 			
 		} catch (JauntException e) {
@@ -41,12 +72,14 @@ public class Scraper {
 		}
 		
 		System.out.println(data);
+		
 	}
 	
 	private static JSONObject getJSONObject(InternshipLink link){
 		JSONObject company = new JSONObject();
 		
 		company.put("company", link.getCompany());
+		company.put("link", link.getLink());
 		company.put("size", link.getSize());
 		company.put("platform", link.getPlatform());
 		company.put("locations", new JSONArray(link.getLocation()));
@@ -150,7 +183,7 @@ public class Scraper {
 		
 		while(m.find()) {
 			String skill = m.group().trim().toLowerCase();
-			positions.add(skill);
+			positions.add(Constants.types.get(skill));
 		}
 		
 		return positions;

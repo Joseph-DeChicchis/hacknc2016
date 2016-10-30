@@ -1,8 +1,9 @@
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import com.jaunt.Element;
+import com.jaunt.UserAgent;
 import com.sun.org.apache.xerces.internal.util.URI;
 import com.sun.org.apache.xerces.internal.util.URI.MalformedURIException;
 
@@ -17,13 +18,6 @@ public class InternshipLink {
 	public InternshipLink(String company, String link){
 		this.company = company.trim();
 		this.link = link.trim();
-		
-		try {
-			companySite = getDomainName(link);
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 	
@@ -69,10 +63,7 @@ public class InternshipLink {
 	}
 	
 	public Set<String> getLocation() {
-		if(!location.isEmpty())
-			return location;
-		else
-			return new HashSet<String>(Arrays.asList("all"));
+		return location;
 	}
 
 	public void setLocation(Set<String> location) {
@@ -80,10 +71,7 @@ public class InternshipLink {
 	}
 
 	public Set<String> getPositions() {
-		if(!positions.isEmpty())
-			return positions;
-		else
-			return new HashSet<String>(Arrays.asList("all"));
+		return positions;
 	}
 
 	public void setPositions(Set<String> positions) {
@@ -91,10 +79,7 @@ public class InternshipLink {
 	}
 
 	public Set<String> getLangauges() {
-		if(!langauges.isEmpty())
-			return langauges;
-		else
-			return new HashSet<String>(Arrays.asList("all"));
+		return langauges;
 	}
 
 	public void setLangauges(Set<String> langauges) {
