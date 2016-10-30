@@ -30,9 +30,7 @@ public class Scraper {
 		
 		JSONObject data = new JSONObject();
 		PrintWriter pw = null;
-		
-		List<String> types = new ArrayList<>();
-		
+			
 		try {
 			pw = new PrintWriter(new File("data/db.json"));
 			pw.println(data.toString());
@@ -55,8 +53,7 @@ public class Scraper {
 				//System.out.println(++count + " of " + designLinks.size());
 				//data.wrap(company);
 				String type = getCompanyType(link);
-				if(type != null)
-					types.add(type);
+				link.setType(parseType(type));
 				pw.println(company + ",");
 			}
 			
@@ -73,8 +70,7 @@ public class Scraper {
 				//System.out.println(++count + " of " + links.size());
 				//data.wrap(company);
 				String type = getCompanyType(link);
-				if(type != null)
-					types.add(type);
+				link.setType(parseType(type));
 				pw.println(company + ",");
 			}
 			
@@ -82,15 +78,63 @@ public class Scraper {
 			e.printStackTrace();
 		}
 		
-		System.out.println(types);
 		//System.out.println(data);
 		
+	}
+	
+	private static String parseType(String type){
+		if(type == null){
+			return null;
+		}
+		for(String str : Constants.softwareKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.designKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.hardwareKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.realEstateKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.financeKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.entertainmentKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		
+		for(String str : Constants.travelKeyWords){
+			if(type.indexOf(str) >= 0){
+				return "software";
+			}
+		}
+		return null;
 	}
 	
 	private static JSONObject getJSONObject(InternshipLink link){
 		JSONObject company = new JSONObject();
 		
 		company.put("company", link.getCompany());
+		company.put("type", link.getType());
 		company.put("link", link.getLink());
 		company.put("size", link.getSize());
 		company.put("platform", link.getPlatform());

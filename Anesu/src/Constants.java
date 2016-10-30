@@ -29,8 +29,9 @@ public class Constants {
 	public static String[] softwareKeyWords;
 	public static String[] hardwareKeyWords;
 	public static String[] realEstateKeyWords;
-	public static String[] fincanceKeyWords;
+	public static String[] financeKeyWords;
 	public static String[] entertainmentKeyWords;
+	public static String[] designKeyWords;
 	public static String[] travelKeyWords;
 	public static Set<String> largeCompaniesSet;
 	public static Set<String> cities;
@@ -38,8 +39,13 @@ public class Constants {
 	public static Map<String, String> types;
 	
 	static{
-		softwareKeyWords = new String[]{"soft", "software", "internet"};
-		hardwareKeyWords = new String[]{"hard", "hardware", "system"};
+		softwareKeyWords = new String[]{"soft", "software", "internet", "online", "telecommunications", "technology", "tech", "data"};
+		hardwareKeyWords = new String[]{"hard", "hardware", "system", "networking", "semiconductors"};
+		designKeyWords = new String[]{"design", "ui", "ux"};
+		realEstateKeyWords = new String[]{"real", "estate", "remodeling"};
+		financeKeyWords = new String[]{"financial", "finance", "money", "bank", "banking", "investment", "commerce"};
+		entertainmentKeyWords = new String[]{"entertainment", "media", "blogging"};
+		travelKeyWords = new String[]{"travel"};
 		categories = new String[]{"software", "hardware", "design", "finance", "real estate"
 				, "entertainment", "travel"};
 		largeCompanies = new String[]{"amazon", "amd", "apple", "broadcom", "cisco", "dell", "ebay", "emc"

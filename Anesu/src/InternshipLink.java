@@ -11,6 +11,7 @@ public class InternshipLink {
 	private String company;
 	private String link;
 	private String companySite;
+	private String type;
 	
 	private Set<String> location, positions, langauges;
 	private String size, platform;
@@ -101,5 +102,15 @@ public class InternshipLink {
 	public void setPlatform(String platform) {
 		this.platform = platform;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 	
 }
